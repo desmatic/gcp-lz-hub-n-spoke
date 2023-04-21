@@ -1,12 +1,8 @@
-resource "random_string" "project-connectivity-suffix" {
-  length  = 5
-  special = false
-  upper   = false
-}
-
 resource "google_project_service" "connectivity-service-cloudbilling" {
   project = var.pipeline_project_id
   service = "cloudbilling.googleapis.com"
+
+  disable_on_destroy = false
 
   timeouts {
     create = "30m"
@@ -14,19 +10,54 @@ resource "google_project_service" "connectivity-service-cloudbilling" {
   }
 }
 
-module "project-vpc-connectivity" {
+resource "random_string" "project-connectivity-suffix" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
+module "project-connectivity-vpc" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 14.2"
 
-  name       = "vpc-connectivity"
-  project_id = "vpc-connectivity-${random_string.project-connectivity-suffix.id}"
+  name       = "connectivity-vpc"
+  project_id = "connectivity-vpc-${random_string.project-connectivity-suffix.id}"
   org_id     = var.org_id
   folder_id  = google_folder.connectivity-infraops.name
 
-  enable_shared_vpc_host_project = true
+  auto_create_network            = false
   billing_account                = var.billing_account
+  create_project_sa              = false
+  enable_shared_vpc_host_project = true
 
   depends_on = [
     google_project_service.connectivity-service-cloudbilling
+  ]
+}
+
+resource "random_string" "project-monitoring-suffix" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
+module "project-connectivity-monitoring" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 14.2"
+
+  name       = "connectivity-monitoring"
+  project_id = "connectivity-monitoring-${random_string.project-monitoring-suffix.id}"
+  org_id     = var.org_id
+  folder_id  = google_folder.connectivity-sre.name
+
+  auto_create_network            = false
+  billing_account                = var.billing_account
+  create_project_sa              = false
+  enable_shared_vpc_host_project = false
+  svpc_host_project_id           = module.project-connectivity-vpc.project_id
+
+  depends_on = [
+    google_project_service.connectivity-service-cloudbilling,
+    module.project-connectivity-vpc,
   ]
 }

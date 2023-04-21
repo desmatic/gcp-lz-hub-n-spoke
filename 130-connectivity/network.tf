@@ -1,28 +1,32 @@
-resource "google_project_service" "project-vpc-connectivity-service-compute" {
+resource "google_project_service" "project-connectivity-vpc-service-compute" {
   project = var.pipeline_project_id
   service = "compute.googleapis.com"
 
+  disable_on_destroy = false
+
   timeouts {
     create = "30m"
     update = "40m"
   }
 }
 
-resource "google_project_service" "project-vpc-connectivity-service-iam" {
+resource "google_project_service" "project-connectivity-vpc-service-iam" {
   project = var.pipeline_project_id
   service = "iam.googleapis.com"
 
+  disable_on_destroy = false
+
   timeouts {
     create = "30m"
     update = "40m"
   }
 }
 
-module "vpc-connectivity" {
+module "connectivity-vpc" {
   source  = "terraform-google-modules/network/google"
   version = "~> 7.0"
 
-  project_id      = module.project-vpc-connectivity.project_id
+  project_id      = module.project-connectivity-vpc.project_id
   network_name    = "connectivity"
   routing_mode    = "GLOBAL"
   shared_vpc_host = true
@@ -61,7 +65,7 @@ module "vpc-connectivity" {
 
   routes = [
     {
-      name              = "rt-vpc-connectivity-1000-egress-internet-default"
+      name              = "rt-connectivity-vpc-1000-egress-internet-default"
       description       = "Tag based route through IGW to access internet"
       destination_range = "0.0.0.0/0"
       priority          = "1000"
@@ -71,15 +75,15 @@ module "vpc-connectivity" {
   ]
 
   depends_on = [
-    google_project_service.project-vpc-connectivity-service-compute,
-    google_project_service.project-vpc-connectivity-service-iam,
+    google_project_service.project-connectivity-vpc-service-compute,
+    google_project_service.project-connectivity-vpc-service-iam,
   ]
 }
 
-resource "google_compute_firewall" "vpc-connectivity-allow-iap-ssh" {
-  name      = "vpc-connectivity-allow-iap-ssh"
-  network   = module.vpc-connectivity.network_name
-  project   = module.project-vpc-connectivity.project_id
+resource "google_compute_firewall" "connectivity-vpc-allow-iap-ssh" {
+  name      = "connectivity-vpc-allow-iap-ssh"
+  network   = module.connectivity-vpc.network_name
+  project   = module.project-connectivity-vpc.project_id
   direction = "INGRESS"
   priority  = 10000
 
@@ -97,10 +101,10 @@ resource "google_compute_firewall" "vpc-connectivity-allow-iap-ssh" {
   ]
 }
 
-resource "google_compute_firewall" "vpc-connectivity-allow-icmp" {
-  name      = "vpc-connectivity-allow-icmp"
-  network   = module.vpc-connectivity.network_name
-  project   = module.project-vpc-connectivity.project_id
+resource "google_compute_firewall" "connectivity-vpc-allow-icmp" {
+  name      = "connectivity-vpc-allow-icmp"
+  network   = module.connectivity-vpc.network_name
+  project   = module.project-connectivity-vpc.project_id
   direction = "INGRESS"
   priority  = 10000
 
@@ -117,20 +121,20 @@ resource "google_compute_firewall" "vpc-connectivity-allow-icmp" {
   ]
 }
 # NAT Router and config
-resource "google_compute_router" "cr-vpc-connectivity-sb0-primary-router" {
-  name    = "cr-vpc-connectivity-sb0-primary-router"
-  project = module.project-vpc-connectivity.project_id
+resource "google_compute_router" "cr-connectivity-vpc-sb0-primary-router" {
+  name    = "cr-connectivity-vpc-sb0-primary-router"
+  project = module.project-connectivity-vpc.project_id
   region  = var.region_primary
-  network = module.vpc-connectivity.network_self_link
+  network = module.connectivity-vpc.network_self_link
 }
 
-resource "google_compute_router_nat" "rn-vpc-connectivity-sb0-primary-egress" {
-  name                               = "rn-vpc-connectivity-sb0-primary-egress"
-  project                            = module.project-vpc-connectivity.project_id
-  router                             = google_compute_router.cr-vpc-connectivity-sb0-primary-router.name
+resource "google_compute_router_nat" "rn-connectivity-vpc-sb0-primary-egress" {
+  name                               = "rn-connectivity-vpc-sb0-primary-egress"
+  project                            = module.project-connectivity-vpc.project_id
+  router                             = google_compute_router.cr-connectivity-vpc-sb0-primary-router.name
   region                             = var.region_primary
   nat_ip_allocate_option             = "MANUAL_ONLY"
-  nat_ips                            = google_compute_address.ca-vpc-connectivity-sb0-primary-1.*.self_link
+  nat_ips                            = google_compute_address.ca-connectivity-vpc-sb0-primary-1.*.self_link
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 
   log_config {
@@ -139,26 +143,26 @@ resource "google_compute_router_nat" "rn-vpc-connectivity-sb0-primary-egress" {
   }
 }
 
-resource "google_compute_address" "ca-vpc-connectivity-sb0-primary-1" {
-  project = module.project-vpc-connectivity.project_id
-  name    = "ca-vpc-connectivity-sb0-primary-1"
+resource "google_compute_address" "ca-connectivity-vpc-sb0-primary-1" {
+  project = module.project-connectivity-vpc.project_id
+  name    = "ca-connectivity-vpc-sb0-primary-1"
   region  = var.region_primary
 }
 
-resource "google_compute_router" "cr-vpc-connectivity-sb1-secondary-router" {
-  name    = "cr-vpc-connectivity-sb1-secondary-router"
-  project = module.project-vpc-connectivity.project_id
+resource "google_compute_router" "cr-connectivity-vpc-sb1-secondary-router" {
+  name    = "cr-connectivity-vpc-sb1-secondary-router"
+  project = module.project-connectivity-vpc.project_id
   region  = var.region_secondary
-  network = module.vpc-connectivity.network_self_link
+  network = module.connectivity-vpc.network_self_link
 }
 
-resource "google_compute_router_nat" "rn-vpc-connectivity-sb1-secondary-egress" {
-  name                               = "rn-vpc-connectivity-sb1-secondary-egress"
-  project                            = module.project-vpc-connectivity.project_id
-  router                             = google_compute_router.cr-vpc-connectivity-sb1-secondary-router.name
+resource "google_compute_router_nat" "rn-connectivity-vpc-sb1-secondary-egress" {
+  name                               = "rn-connectivity-vpc-sb1-secondary-egress"
+  project                            = module.project-connectivity-vpc.project_id
+  router                             = google_compute_router.cr-connectivity-vpc-sb1-secondary-router.name
   region                             = var.region_secondary
   nat_ip_allocate_option             = "MANUAL_ONLY"
-  nat_ips                            = google_compute_address.ca-vpc-connectivity-sb1-secondary-1.*.self_link
+  nat_ips                            = google_compute_address.ca-connectivity-vpc-sb1-secondary-1.*.self_link
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 
   log_config {
@@ -167,8 +171,8 @@ resource "google_compute_router_nat" "rn-vpc-connectivity-sb1-secondary-egress" 
   }
 }
 
-resource "google_compute_address" "ca-vpc-connectivity-sb1-secondary-1" {
-  project = module.project-vpc-connectivity.project_id
-  name    = "ca-vpc-connectivity-sb1-secondary-1"
+resource "google_compute_address" "ca-connectivity-vpc-sb1-secondary-1" {
+  project = module.project-connectivity-vpc.project_id
+  name    = "ca-connectivity-vpc-sb1-secondary-1"
   region  = var.region_secondary
 }

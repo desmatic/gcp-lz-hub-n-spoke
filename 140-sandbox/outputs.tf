@@ -5,5 +5,5 @@ output "sandbox_folder_id" {
 
 output "sandbox_network_self_link" {
   description = "The sandbox network id"
-  value       = module.vpc-sandbox.network_self_link
+  value       = module.sandbox-vpc.network_self_link
 }

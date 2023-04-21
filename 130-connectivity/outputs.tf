@@ -5,5 +5,5 @@ output "connectivity_folder_id" {
 
 output "connectivity_network_self_link" {
   description = "The connectivity network id"
-  value       = module.vpc-connectivity.network_self_link
+  value       = module.connectivity-vpc.network_self_link
 }

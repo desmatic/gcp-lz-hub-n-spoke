@@ -2,6 +2,8 @@ resource "google_project_service" "connectivity-service-cloudresourcemanager" {
   project = var.pipeline_project_id
   service = "cloudresourcemanager.googleapis.com"
 
+  disable_on_destroy = false
+
   timeouts {
     create = "30m"
     update = "40m"

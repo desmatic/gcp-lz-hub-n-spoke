@@ -1,5 +1,5 @@
-resource "google_project_service" "project-vpc-sandbox-service-dns" {
-  project = module.project-vpc-sandbox.project_id
+resource "google_project_service" "project-sandbox-vpc-service-dns" {
+  project = module.project-sandbox-vpc.project_id
   service = "dns.googleapis.com"
 
   timeouts {
@@ -8,9 +8,9 @@ resource "google_project_service" "project-vpc-sandbox-service-dns" {
   }
 }
 
-resource "google_dns_managed_zone" "vpc-sandbox" {
-  project     = module.project-vpc-sandbox.project_id
-  name        = "vpc-sandbox"
+resource "google_dns_managed_zone" "sandbox-vpc" {
+  project     = module.project-sandbox-vpc.project_id
+  name        = "sandbox-vpc"
   dns_name    = "snd.gcp.${var.org_id}."
   description = "Sandbox private DNS zone"
   labels = {
@@ -21,11 +21,11 @@ resource "google_dns_managed_zone" "vpc-sandbox" {
 
   private_visibility_config {
     networks {
-      network_url = module.vpc-sandbox.network_id
+      network_url = module.sandbox-vpc.network_id
     }
   }
 
   depends_on = [
-    google_project_service.project-vpc-sandbox-service-dns
+    google_project_service.project-sandbox-vpc-service-dns
   ]
 }
