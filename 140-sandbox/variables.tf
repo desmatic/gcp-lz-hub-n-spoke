@@ -3,6 +3,11 @@ variable "org_domain" {
   type        = string
 }
 
+variable "pipeline_project_id" {
+  description = "Pipeline project id for making terraform api calls"
+  type        = string
+}
+
 variable "environment_folder_id" {
   description = "The organization folder id for different environments"
   type        = string

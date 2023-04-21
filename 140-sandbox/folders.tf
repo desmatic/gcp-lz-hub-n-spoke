@@ -1,6 +1,20 @@
+resource "google_project_service" "sandbox-service-cloudresourcemanager" {
+  project = var.pipeline_project_id
+  service = "cloudresourcemanager.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+}
+
 resource "google_folder" "sandbox" {
   display_name = "Sandbox"
   parent       = "folders/${var.environment_folder_id}"
+
+  depends_on = [
+    google_project_service.sandbox-service-cloudresourcemanager
+  ]
 }
 
 resource "google_folder_iam_binding" "sandbox_admin" {

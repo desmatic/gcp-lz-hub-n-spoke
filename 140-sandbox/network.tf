@@ -1,6 +1,16 @@
 resource "google_project_service" "project-vpc-sandbox-service-compute" {
-  project = module.project-vpc-sandbox.project_id
+  project = var.pipeline_project_id
   service = "compute.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+}
+
+resource "google_project_service" "project-vpc-sandbox-service-iam" {
+  project = var.pipeline_project_id
+  service = "iam.googleapis.com"
 
   timeouts {
     create = "30m"
@@ -61,7 +71,8 @@ module "vpc-sandbox" {
   ]
 
   depends_on = [
-    google_project_service.project-vpc-sandbox-service-compute
+    google_project_service.project-vpc-sandbox-service-compute,
+    google_project_service.project-vpc-sandbox-service-iam,
   ]
 }
 

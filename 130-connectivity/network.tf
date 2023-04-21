@@ -1,6 +1,16 @@
 resource "google_project_service" "project-vpc-connectivity-service-compute" {
-  project = module.project-vpc-connectivity.project_id
+  project = var.pipeline_project_id
   service = "compute.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+}
+
+resource "google_project_service" "project-vpc-connectivity-service-iam" {
+  project = var.pipeline_project_id
+  service = "iam.googleapis.com"
 
   timeouts {
     create = "30m"
@@ -27,7 +37,7 @@ module "vpc-connectivity" {
       subnet_flow_logs_sampling = "0.1"
       subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
       subnet_flow_logs_interval = "INTERVAL_10_MIN"
-      stack                     = "IPV4_ONLY"  # "IPV4_IPV6"
+      stack                     = "IPV4_ONLY" # "IPV4_IPV6"
       #ipv6_type                 = "EXTERNAL"
     },
     {
@@ -39,7 +49,7 @@ module "vpc-connectivity" {
       subnet_flow_logs_sampling = "0.1"
       subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
       subnet_flow_logs_interval = "INTERVAL_10_MIN"
-      stack                     = "IPV4_ONLY"  # "IPV4_IPV6"
+      stack                     = "IPV4_ONLY" # "IPV4_IPV6"
       #ipv6_type                 = "EXTERNAL"
     },
   ]
@@ -61,7 +71,8 @@ module "vpc-connectivity" {
   ]
 
   depends_on = [
-    google_project_service.project-vpc-connectivity-service-compute
+    google_project_service.project-vpc-connectivity-service-compute,
+    google_project_service.project-vpc-connectivity-service-iam,
   ]
 }
 

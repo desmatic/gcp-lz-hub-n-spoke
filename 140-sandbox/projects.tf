@@ -4,6 +4,17 @@ resource "random_string" "project-sandbox-suffix" {
   upper   = false
 }
 
+
+resource "google_project_service" "sandbox-service-cloudbilling" {
+  project = var.pipeline_project_id
+  service = "cloudbilling.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+}
+
 module "project-vpc-sandbox" {
   source  = "terraform-google-modules/project-factory/google"
   version =   "~> 14.2"
@@ -15,4 +26,8 @@ module "project-vpc-sandbox" {
 
   enable_shared_vpc_host_project = true
   billing_account                = var.billing_account
+
+  depends_on = [
+    google_project_service.sandbox-service-cloudbilling
+  ]
 }

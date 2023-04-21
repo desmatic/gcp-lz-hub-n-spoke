@@ -7,3 +7,8 @@ variable "landingzone_folder_id" {
   description = "The organization folder id for deploying the landingzone to"
   type        = string
 }
+
+variable "pipeline_project_id" {
+  description = "Pipeline project id for making terraform api calls"
+  type        = string
+}
