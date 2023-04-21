@@ -17,7 +17,7 @@ resource "google_project_service" "sandbox-service-cloudbilling" {
 
 module "project-vpc-sandbox" {
   source  = "terraform-google-modules/project-factory/google"
-  version =   "~> 14.2"
+  version = "~> 14.2"
 
   name       = "vpc-sandbox"
   project_id = "vpc-sandbox-${random_string.project-sandbox-suffix.id}"

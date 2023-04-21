@@ -37,7 +37,7 @@ module "vpc-sandbox" {
       subnet_flow_logs_sampling = "0.1"
       subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
       subnet_flow_logs_interval = "INTERVAL_10_MIN"
-      stack                     = "IPV4_ONLY"  # "IPV4_IPV6"
+      stack                     = "IPV4_ONLY" # "IPV4_IPV6"
       #ipv6_type                 = "EXTERNAL"
     },
     {
@@ -49,13 +49,13 @@ module "vpc-sandbox" {
       subnet_flow_logs_sampling = "0.1"
       subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
       subnet_flow_logs_interval = "INTERVAL_10_MIN"
-      stack                     = "IPV4_ONLY"  # "IPV4_IPV6"
+      stack                     = "IPV4_ONLY" # "IPV4_IPV6"
       #ipv6_type                 = "EXTERNAL"
     },
   ]
 
   secondary_ranges = {
-    sandbox-primary-region = []
+    sandbox-primary-region   = []
     sandbox-secondary-region = []
   }
 

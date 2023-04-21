@@ -36,5 +36,5 @@ variable "landingzone_network" {
 }
 
 variable "connectivity_network_self_link" {
-    description = "Output from connectivity module for network peering"
+  description = "Output from connectivity module for network peering"
 }
