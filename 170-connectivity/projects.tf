@@ -61,3 +61,30 @@ module "project-connectivity-monitoring" {
     module.project-connectivity-vpc,
   ]
 }
+
+resource "random_string" "project-secrets-suffix" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
+module "project-connectivity-secrets" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 14.2"
+
+  name       = "connectivity-secrets"
+  project_id = "connectivity-secrets-${random_string.project-secrets-suffix.id}"
+  org_id     = var.org_id
+  folder_id  = google_folder.connectivity-secops.name
+
+  auto_create_network            = false
+  billing_account                = var.billing_account
+  create_project_sa              = false
+  enable_shared_vpc_host_project = false
+  svpc_host_project_id           = module.project-connectivity-vpc.project_id
+
+  depends_on = [
+    google_project_service.connectivity-service-cloudbilling,
+    module.project-connectivity-vpc,
+  ]
+}

@@ -60,3 +60,30 @@ module "project-sandbox-monitoring" {
     module.project-sandbox-vpc,
   ]
 }
+
+resource "random_string" "project-secrets-suffix" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
+module "project-sandbox-secrets" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 14.2"
+
+  name       = "sandbox-secrets"
+  project_id = "sandbox-secrets-${random_string.project-secrets-suffix.id}"
+  org_id     = var.org_id
+  folder_id  = google_folder.sandbox-secops.name
+
+  auto_create_network            = false
+  billing_account                = var.billing_account
+  create_project_sa              = false
+  enable_shared_vpc_host_project = false
+  svpc_host_project_id           = module.project-sandbox-vpc.project_id
+
+  depends_on = [
+    google_project_service.sandbox-service-cloudbilling,
+    module.project-sandbox-vpc,
+  ]
+}
