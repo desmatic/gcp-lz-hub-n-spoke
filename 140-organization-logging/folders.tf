@@ -10,7 +10,7 @@ resource "google_project_service" "logging-service-cloudresourcemanager" {
 
 resource "google_folder" "logging" {
   display_name = "Logging"
-  parent       = "folders/${var.landingzone_folder_id}"
+  parent       = var.landingzone_folder_id
 
   depends_on = [
     google_project_service.logging-service-cloudresourcemanager

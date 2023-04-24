@@ -23,8 +23,7 @@ resource "google_project_service" "project-connectivity-vpc-service-iam" {
 }
 
 module "connectivity-vpc" {
-  source  = "terraform-google-modules/network/google"
-  version = "~> 7.0"
+  source = "terraform-google-modules/network/google"
 
   project_id      = module.project-connectivity-vpc.project_id
   network_name    = "connectivity"

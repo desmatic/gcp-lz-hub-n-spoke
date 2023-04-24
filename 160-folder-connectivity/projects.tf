@@ -17,11 +17,10 @@ resource "random_string" "project-connectivity-suffix" {
 }
 
 module "project-connectivity-vpc" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 14.2"
+  source = "terraform-google-modules/project-factory/google"
 
   name       = "connectivity-vpc"
-  project_id = "connectivity-vpc-${random_string.project-connectivity-suffix.id}"
+  project_id = "connectivity-vpc-${random_string.project-connectivity-suffix.result}"
   org_id     = var.org_id
   folder_id  = google_folder.connectivity-infraops.name
 
@@ -42,23 +41,21 @@ resource "random_string" "project-monitoring-suffix" {
 }
 
 module "project-connectivity-monitoring" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 14.2"
+  source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
   name       = "connectivity-monitoring"
-  project_id = "connectivity-monitoring-${random_string.project-monitoring-suffix.id}"
+  project_id = "connectivity-monitoring-${random_string.project-monitoring-suffix.result}"
   org_id     = var.org_id
   folder_id  = google_folder.connectivity-sre.name
 
-  auto_create_network            = false
-  billing_account                = var.billing_account
-  create_project_sa              = false
-  enable_shared_vpc_host_project = false
-  svpc_host_project_id           = module.project-connectivity-vpc.project_id
+  auto_create_network = false
+  billing_account     = var.billing_account
+  create_project_sa   = false
+  shared_vpc          = module.project-connectivity-vpc.project_id
 
-  depends_on = [
-    google_project_service.connectivity-service-cloudbilling,
-    module.project-connectivity-vpc,
+  activate_apis = [
+    "compute.googleapis.com",
+    "container.googleapis.com",
   ]
 }
 
@@ -69,22 +66,20 @@ resource "random_string" "project-secrets-suffix" {
 }
 
 module "project-connectivity-secrets" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 14.2"
+  source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
   name       = "connectivity-secrets"
-  project_id = "connectivity-secrets-${random_string.project-secrets-suffix.id}"
+  project_id = "connectivity-secrets-${random_string.project-secrets-suffix.result}"
   org_id     = var.org_id
   folder_id  = google_folder.connectivity-secops.name
 
-  auto_create_network            = false
-  billing_account                = var.billing_account
-  create_project_sa              = false
-  enable_shared_vpc_host_project = false
-  svpc_host_project_id           = module.project-connectivity-vpc.project_id
+  auto_create_network = false
+  billing_account     = var.billing_account
+  create_project_sa   = false
+  shared_vpc          = module.project-connectivity-vpc.project_id
 
-  depends_on = [
-    google_project_service.connectivity-service-cloudbilling,
-    module.project-connectivity-vpc,
+  activate_apis = [
+    "compute.googleapis.com",
+    "container.googleapis.com",
   ]
 }

@@ -10,7 +10,7 @@ resource "google_project_service" "environment-service-cloudresourcemanager" {
 
 resource "google_folder" "environment" {
   display_name = "Environment"
-  parent       = "folders/${var.landingzone_folder_id}"
+  parent       = var.landingzone_folder_id
 
   depends_on = [
     google_project_service.environment-service-cloudresourcemanager

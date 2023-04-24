@@ -20,8 +20,8 @@ module "project-logging" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 14.2"
 
-  name       = "logging"
-  project_id = "logging-${random_string.project-logging-suffix.id}"
+  name       = "organization-logging"
+  project_id = "organization-logging-${random_string.project-logging-suffix.result}"
   org_id     = var.org_id
   folder_id  = google_folder.logging.name
 
