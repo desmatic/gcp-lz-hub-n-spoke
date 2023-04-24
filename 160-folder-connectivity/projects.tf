@@ -57,6 +57,10 @@ module "project-connectivity-monitoring" {
     "compute.googleapis.com",
     "container.googleapis.com",
   ]
+
+  depends_on = [
+    google_project_service.connectivity-service-cloudbilling
+  ]
 }
 
 resource "random_string" "project-secrets-suffix" {
@@ -81,5 +85,9 @@ module "project-connectivity-secrets" {
   activate_apis = [
     "compute.googleapis.com",
     "container.googleapis.com",
+  ]
+
+  depends_on = [
+    google_project_service.connectivity-service-cloudbilling
   ]
 }
