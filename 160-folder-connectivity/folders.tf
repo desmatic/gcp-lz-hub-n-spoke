@@ -27,8 +27,8 @@ resource "google_folder_iam_binding" "connectivity_admin" {
   ]
 }
 
-resource "google_folder" "connectivity-dba" {
-  display_name = "DBA"
+resource "google_folder" "connectivity-dre" {
+  display_name = "DRE"
   parent       = "folders/${google_folder.connectivity.folder_id}"
 }
 

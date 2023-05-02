@@ -10,7 +10,7 @@ resource "google_project_service" "billing-service-cloudresourcemanager" {
 
 resource "google_folder" "billing" {
   display_name = "Billing"
-  parent       = "folders/${var.landingzone_folder_id}"
+  parent       = var.landingzone_folder_id
 
   depends_on = [
     google_project_service.billing-service-cloudresourcemanager

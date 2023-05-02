@@ -25,8 +25,8 @@ resource "google_folder_iam_binding" "sandbox_admin" {
   ]
 }
 
-resource "google_folder" "sandbox-dre" {
-  display_name = "DRE"
+resource "google_folder" "sandbox-dba" {
+  display_name = "DBA"
   parent       = "folders/${google_folder.sandbox.folder_id}"
 }
 

@@ -1,3 +1,8 @@
+variable "landingzone_organization_deployment" {
+  description = "Deploy landing zone under organization or folder"
+  type        = bool
+}
+
 variable "org_domain" {
   description = "The organization id for the associated resources"
   type        = string
