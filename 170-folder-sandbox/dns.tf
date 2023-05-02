@@ -9,7 +9,7 @@ resource "google_project_service" "project-sandbox-vpc-service-dns" {
 }
 
 resource "google_dns_managed_zone" "sandbox-vpc" {
-  project = var.pipeline_project_id
+  project     = var.pipeline_project_id
   name        = "sandbox-vpc"
   dns_name    = "snd.gcp.${var.org_id}."
   description = "Sandbox private DNS zone"

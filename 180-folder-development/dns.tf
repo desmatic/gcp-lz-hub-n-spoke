@@ -1,4 +1,4 @@
-resource "google_project_service" "project-sandbox-vpc-service-dns" {
+resource "google_project_service" "project-development-vpc-service-dns" {
   project = var.pipeline_project_id
   service = "dns.googleapis.com"
 
@@ -8,11 +8,11 @@ resource "google_project_service" "project-sandbox-vpc-service-dns" {
   }
 }
 
-resource "google_dns_managed_zone" "sandbox-vpc" {
-  project = var.pipeline_project_id
-  name        = "sandbox-vpc"
-  dns_name    = "snd.gcp.${var.org_id}."
-  description = "Sandbox private DNS zone"
+resource "google_dns_managed_zone" "development-vpc" {
+  project     = var.pipeline_project_id
+  name        = "development-vpc"
+  dns_name    = "dev.gcp.${var.org_id}."
+  description = "Development private DNS zone"
   labels = {
     foo = "bar"
   }
@@ -21,11 +21,11 @@ resource "google_dns_managed_zone" "sandbox-vpc" {
 
   private_visibility_config {
     networks {
-      network_url = module.sandbox-vpc.network_id
+      network_url = module.development-vpc.network_id
     }
   }
 
   depends_on = [
-    google_project_service.project-sandbox-vpc-service-dns
+    google_project_service.project-development-vpc-service-dns
   ]
 }

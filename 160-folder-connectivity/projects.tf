@@ -59,7 +59,8 @@ module "project-connectivity-monitoring" {
   ]
 
   depends_on = [
-    google_project_service.connectivity-service-cloudbilling
+    google_project_service.connectivity-service-cloudbilling,
+    module.project-connectivity-vpc,
   ]
 }
 
@@ -88,6 +89,7 @@ module "project-connectivity-secrets" {
   ]
 
   depends_on = [
-    google_project_service.connectivity-service-cloudbilling
+    google_project_service.connectivity-service-cloudbilling,
+    module.project-connectivity-vpc,
   ]
 }

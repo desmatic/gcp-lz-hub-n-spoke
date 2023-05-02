@@ -1,10 +1,10 @@
-resource "random_string" "project-sandbox-suffix" {
+resource "random_string" "project-fixonfail-suffix" {
   length  = 5
   special = false
   upper   = false
 }
 
-resource "google_project_service" "sandbox-service-cloudbilling" {
+resource "google_project_service" "fixonfail-service-cloudbilling" {
   project = var.pipeline_project_id
   service = "cloudbilling.googleapis.com"
 
@@ -16,20 +16,20 @@ resource "google_project_service" "sandbox-service-cloudbilling" {
   }
 }
 
-module "project-sandbox-vpc" {
+module "project-fixonfail-vpc" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 14.2"
 
-  name       = "sandbox-vpc"
-  project_id = "sandbox-vpc-${random_string.project-sandbox-suffix.result}"
+  name       = "fixonfail-vpc"
+  project_id = "fixonfail-vpc-${random_string.project-fixonfail-suffix.result}"
   org_id     = var.org_id
-  folder_id  = google_folder.sandbox-infraops.name
+  folder_id  = google_folder.fixonfail-infraops.name
 
   enable_shared_vpc_host_project = true
   billing_account                = var.billing_account
 
   depends_on = [
-    google_project_service.sandbox-service-cloudbilling
+    google_project_service.fixonfail-service-cloudbilling
   ]
 }
 
@@ -39,22 +39,27 @@ resource "random_string" "project-monitoring-suffix" {
   upper   = false
 }
 
-module "project-sandbox-monitoring" {
+module "project-fixonfail-monitoring" {
   source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
-  name       = "sandbox-monitoring"
-  project_id = "sandbox-monitoring-${random_string.project-monitoring-suffix.result}"
+  name       = "fixonfail-monitoring"
+  project_id = "fixonfail-monitoring-${random_string.project-monitoring-suffix.result}"
   org_id     = var.org_id
-  folder_id  = google_folder.sandbox-sre.name
+  folder_id  = google_folder.fixonfail-sre.name
 
   auto_create_network = false
   billing_account     = var.billing_account
   create_project_sa   = false
-  shared_vpc          = module.project-sandbox-vpc.project_id
+  shared_vpc          = module.project-fixonfail-vpc.project_id
 
   activate_apis = [
     "compute.googleapis.com",
     "container.googleapis.com",
+  ]
+
+  depends_on = [
+    google_project_service.fixonfail-service-cloudbilling,
+    module.project-fixonfail-vpc,
   ]
 }
 
@@ -64,21 +69,26 @@ resource "random_string" "project-secrets-suffix" {
   upper   = false
 }
 
-module "project-sandbox-secrets" {
+module "project-fixonfail-secrets" {
   source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
-  name       = "sandbox-secrets"
-  project_id = "sandbox-secrets-${random_string.project-secrets-suffix.result}"
+  name       = "fixonfail-secrets"
+  project_id = "fixonfail-secrets-${random_string.project-secrets-suffix.result}"
   org_id     = var.org_id
-  folder_id  = google_folder.sandbox-secops.name
+  folder_id  = google_folder.fixonfail-secops.name
 
   auto_create_network = false
   billing_account     = var.billing_account
   create_project_sa   = false
-  shared_vpc          = module.project-sandbox-vpc.project_id
+  shared_vpc          = module.project-fixonfail-vpc.project_id
 
   activate_apis = [
     "compute.googleapis.com",
     "container.googleapis.com",
+  ]
+
+  depends_on = [
+    google_project_service.fixonfail-service-cloudbilling,
+    module.project-fixonfail-vpc,
   ]
 }

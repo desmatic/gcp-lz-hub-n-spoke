@@ -58,7 +58,8 @@ module "project-sandbox-monitoring" {
   ]
 
   depends_on = [
-    google_project_service.sandbox-service-cloudbilling
+    google_project_service.sandbox-service-cloudbilling,
+    module.project-sandbox-vpc,
   ]
 }
 
@@ -87,6 +88,7 @@ module "project-sandbox-secrets" {
   ]
 
   depends_on = [
-    google_project_service.sandbox-service-cloudbilling
+    google_project_service.sandbox-service-cloudbilling,
+    module.project-sandbox-vpc,
   ]
 }

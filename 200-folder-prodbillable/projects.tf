@@ -56,6 +56,11 @@ module "project-sandbox-monitoring" {
     "compute.googleapis.com",
     "container.googleapis.com",
   ]
+
+  depends_on = [
+    google_project_service.sandbox-service-cloudbilling,
+    module.project-sandbox-vpc,
+  ]
 }
 
 resource "random_string" "project-secrets-suffix" {
@@ -80,5 +85,10 @@ module "project-sandbox-secrets" {
   activate_apis = [
     "compute.googleapis.com",
     "container.googleapis.com",
+  ]
+
+  depends_on = [
+    google_project_service.sandbox-service-cloudbilling,
+    module.project-sandbox-vpc,
   ]
 }
