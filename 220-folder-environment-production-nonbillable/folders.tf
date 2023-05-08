@@ -10,7 +10,7 @@ resource "google_project_service" "sandbox-service-cloudresourcemanager" {
 
 resource "google_folder" "sandbox" {
   display_name = "Sandbox"
-  parent       = var.environment_folder_id
+  parent       = var.production_folder_id
 
   depends_on = [
     google_project_service.sandbox-service-cloudresourcemanager

@@ -8,8 +8,8 @@ variable "pipeline_project_id" {
   type        = string
 }
 
-variable "environment_folder_id" {
-  description = "The organization folder id for different environments"
+variable "production_folder_id" {
+  description = "The organization folder id for production environments"
   type        = string
 }
 
