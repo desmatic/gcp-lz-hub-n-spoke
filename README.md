@@ -20,7 +20,7 @@ You can skip straight to the environment folder for workload development (recomm
 1. cp env.local .env.local
 1. vi .env.local
 1. source .env.local
-1. gcloud config set project PROJECT_ID
+1. gcloud config set project ultra-heading-383615
 1. configure git and fetch repo
 
 ```bash
