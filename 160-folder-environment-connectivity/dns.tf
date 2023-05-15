@@ -1,6 +1,8 @@
 resource "google_project_service" "project-connectivity-vpc-service-dns" {
-  project = var.pipeline_project_id
+  project = module.project-connectivity-vpc.project_id
   service = "dns.googleapis.com"
+
+  disable_on_destroy = false
 
   timeouts {
     create = "30m"
@@ -9,9 +11,9 @@ resource "google_project_service" "project-connectivity-vpc-service-dns" {
 }
 
 resource "google_dns_managed_zone" "connectivity-vpc" {
-  project     = var.pipeline_project_id
+  project     = module.project-connectivity-vpc.project_id
   name        = "connectivity-vpc"
-  dns_name    = "con.gcp.${var.org_id}."
+  dns_name    = "con.gcp.${var.org_domain}."
   description = "Connectivity private DNS zone"
   labels = {
     foo = "bar"
