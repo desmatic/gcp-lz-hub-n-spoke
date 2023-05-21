@@ -36,7 +36,7 @@ module "sentinel_log_export" {
 module "sentinel_destination" {
   source                   = "terraform-google-modules/log-export/google//modules/pubsub"
   project_id               = module.project-logging.project_id
-  topic_name               = "sentinel"
+  topic_name               = var.sentinel_topic_name
   log_sink_writer_identity = module.sentinel_log_export.writer_identity
   create_subscriber        = true
   depends_on = [
