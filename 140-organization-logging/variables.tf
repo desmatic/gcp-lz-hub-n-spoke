@@ -27,3 +27,9 @@ variable "org_id" {
   description = "The organization id for the associated resources"
   type        = string
 }
+
+variable "sentinel_topic_name" {
+  type        = string
+  default     = "sentinel"
+  description = "Name of existing topic"
+}

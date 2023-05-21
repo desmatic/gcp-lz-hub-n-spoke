@@ -23,7 +23,7 @@ module "project-logging" {
   name       = "organization-logging"
   project_id = "organization-logging-${random_string.project-logging-suffix.result}"
   org_id     = var.org_id
-  folder_id  = google_folder.logging.name
+  folder_id  = google_folder.logging-csoc.name
 
   auto_create_network            = false
   billing_account                = var.billing_account

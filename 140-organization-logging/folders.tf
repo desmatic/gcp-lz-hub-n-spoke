@@ -17,8 +17,13 @@ resource "google_folder" "logging" {
   ]
 }
 
+resource "google_folder" "logging-csoc" {
+  display_name = "CSOC"
+  parent       = "folders/${google_folder.logging.folder_id}"
+}
+
 resource "google_folder_iam_binding" "logging_admin" {
-  folder = google_folder.logging.name
+  folder = google_folder.logging-csoc.name
   role   = "roles/editor"
   members = [
     "group:gcp-security-admins@${var.org_domain}",
