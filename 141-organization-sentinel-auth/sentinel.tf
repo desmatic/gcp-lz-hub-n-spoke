@@ -5,7 +5,6 @@ locals {
 }
 
 resource "google_iam_workload_identity_pool" "sentinel-workload-identity-pool" {
-  count                     = var.sentinal_workload_identity_pool_id_exists != "yes" ? 1 : 0
   provider                  = google-beta
   project                   = var.logging_project_id
   workload_identity_pool_id = local.workload_identity_pool_id

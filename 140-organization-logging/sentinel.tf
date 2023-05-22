@@ -22,6 +22,18 @@ resource "google_project_service" "project-logging-service-pubsub" {
   }
 }
 
+resource "google_project_service" "project-logging-service-iamcredentials" {
+  project = module.project-logging.project_id
+  service = "iamcredentials.googleapis.com"
+
+  disable_on_destroy = false
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+}
+
 module "sentinel_log_export" {
   source          = "terraform-google-modules/log-export/google"
   destination_uri = module.sentinel_destination.destination_uri

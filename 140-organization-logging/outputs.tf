@@ -10,3 +10,7 @@ output "logging_project_id" {
 output "logging_project_number" {
   value = module.project-logging.project_number
 }
+
+output "logging_pubsub_subscription" {
+  value = module.sentinel_destination.pubsub_subscription
+}

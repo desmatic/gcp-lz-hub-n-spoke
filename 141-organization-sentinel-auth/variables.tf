@@ -14,8 +14,3 @@ variable "sentinel_tenant_id" {
   description = "Please enter your Sentinel tenant id"
 }
 
-variable "sentinal_workload_identity_pool_id_exists" {
-  type        = string
-  nullable    = false
-  description = "A workload Identity Pool has already been created for Azure? (yes/no)"
-}
