@@ -28,6 +28,10 @@ variable "org_id" {
   type        = string
 }
 
+variable "region_primary" {
+  description = "Primary region for networks and workloads"
+}
+
 variable "sentinel_topic_name" {
   type        = string
   default     = "sentinel"

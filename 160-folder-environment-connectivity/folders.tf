@@ -47,8 +47,8 @@ resource "google_folder" "connectivity-infraops" {
   parent       = "folders/${google_folder.connectivity.folder_id}"
 }
 
-resource "google_folder" "connectivity-secops" {
-  display_name = "SecOps"
+resource "google_folder" "connectivity-csoc" {
+  display_name = "CSOC"
   parent       = "folders/${google_folder.connectivity.folder_id}"
 }
 

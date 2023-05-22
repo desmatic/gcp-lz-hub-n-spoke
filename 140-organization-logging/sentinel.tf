@@ -51,6 +51,7 @@ module "sentinel_destination" {
   topic_name               = var.sentinel_topic_name
   log_sink_writer_identity = module.sentinel_log_export.writer_identity
   create_subscriber        = true
+  location                 = var.region_primary
   depends_on = [
     module.project-logging,
   ]

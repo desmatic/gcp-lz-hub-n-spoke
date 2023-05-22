@@ -10,6 +10,7 @@ module "destination" {
   project_id               = module.project-logging.project_id
   dataset_name             = "bq_org_${random_string.logging-suffix.result}"
   log_sink_writer_identity = module.log_export.writer_identity
+  location                 = var.region_primary
 
   depends_on = [
     module.project-logging,

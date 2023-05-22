@@ -27,10 +27,6 @@ variable "region_primary" {
   description = "Primary region for networks and workloads"
 }
 
-variable "region_secondary" {
-  description = "Secondary region for networks and workloads"
-}
-
 variable "landingzone_network" {
   description = "10.x.0.0/16 subnet for networks and workloads"
 }

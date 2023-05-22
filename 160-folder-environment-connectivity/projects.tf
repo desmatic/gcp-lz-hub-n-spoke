@@ -76,7 +76,7 @@ module "project-connectivity-secrets" {
   name       = "connectivity-secrets"
   project_id = "connectivity-secrets-${random_string.project-secrets-suffix.result}"
   org_id     = var.org_id
-  folder_id  = google_folder.connectivity-secops.name
+  folder_id  = google_folder.connectivity-csoc.name
 
   auto_create_network = false
   billing_account     = var.billing_account

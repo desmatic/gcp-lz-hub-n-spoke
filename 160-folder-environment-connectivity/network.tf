@@ -43,18 +43,18 @@ module "connectivity-vpc" {
       stack                     = "IPV4_ONLY" # "IPV4_IPV6"
       #ipv6_type                 = "EXTERNAL"
     },
-    {
-      subnet_name               = "connectivity-secondary-region"
-      subnet_ip                 = cidrsubnet(var.landingzone_network, 6, 4)
-      subnet_region             = var.region_secondary
-      subnet_private_access     = true
-      subnet_flow_logs          = true
-      subnet_flow_logs_sampling = "0.1"
-      subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
-      subnet_flow_logs_interval = "INTERVAL_10_MIN"
-      stack                     = "IPV4_ONLY" # "IPV4_IPV6"
-      #ipv6_type                 = "EXTERNAL"
-    },
+    #    {
+    #      subnet_name               = "connectivity-secondary-region"
+    #      subnet_ip                 = cidrsubnet(var.landingzone_network, 6, 4)
+    #      subnet_region             = var.region_secondary
+    #      subnet_private_access     = true
+    #      subnet_flow_logs          = true
+    #      subnet_flow_logs_sampling = "0.1"
+    #      subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
+    #      subnet_flow_logs_interval = "INTERVAL_10_MIN"
+    #      stack                     = "IPV4_ONLY" # "IPV4_IPV6"
+    #     #ipv6_type                 = "EXTERNAL"
+    #    },
   ]
 
   secondary_ranges = {
@@ -148,30 +148,30 @@ resource "google_compute_address" "ca-connectivity-vpc-sb0-primary-1" {
   region  = var.region_primary
 }
 
-resource "google_compute_router" "cr-connectivity-vpc-sb1-secondary-router" {
-  name    = "cr-connectivity-vpc-sb1-secondary-router"
-  project = module.project-connectivity-vpc.project_id
-  region  = var.region_secondary
-  network = module.connectivity-vpc.network_self_link
-}
+#resource "google_compute_router" "cr-connectivity-vpc-sb1-secondary-router" {
+#  name    = "cr-connectivity-vpc-sb1-secondary-router"
+#  project = module.project-connectivity-vpc.project_id
+#  region  = var.region_secondary
+#  network = module.connectivity-vpc.network_self_link
+#}
 
-resource "google_compute_router_nat" "rn-connectivity-vpc-sb1-secondary-egress" {
-  name                               = "rn-connectivity-vpc-sb1-secondary-egress"
-  project                            = module.project-connectivity-vpc.project_id
-  router                             = google_compute_router.cr-connectivity-vpc-sb1-secondary-router.name
-  region                             = var.region_secondary
-  nat_ip_allocate_option             = "MANUAL_ONLY"
-  nat_ips                            = google_compute_address.ca-connectivity-vpc-sb1-secondary-1.*.self_link
-  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+#resource "google_compute_router_nat" "rn-connectivity-vpc-sb1-secondary-egress" {
+#  name                               = "rn-connectivity-vpc-sb1-secondary-egress"
+#  project                            = module.project-connectivity-vpc.project_id
+#  router                             = google_compute_router.cr-connectivity-vpc-sb1-secondary-router.name
+#  region                             = var.region_secondary
+#  nat_ip_allocate_option             = "MANUAL_ONLY"
+#  nat_ips                            = google_compute_address.ca-connectivity-vpc-sb1-secondary-1.*.self_link
+#  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+#
+#  log_config {
+#    filter = "TRANSLATIONS_ONLY"
+#    enable = true
+#  }
+#}
 
-  log_config {
-    filter = "TRANSLATIONS_ONLY"
-    enable = true
-  }
-}
-
-resource "google_compute_address" "ca-connectivity-vpc-sb1-secondary-1" {
-  project = module.project-connectivity-vpc.project_id
-  name    = "ca-connectivity-vpc-sb1-secondary-1"
-  region  = var.region_secondary
-}
+#resource "google_compute_address" "ca-connectivity-vpc-sb1-secondary-1" {
+#  project = module.project-connectivity-vpc.project_id
+#  name    = "ca-connectivity-vpc-sb1-secondary-1"
+#  region  = var.region_secondary
+#}
