@@ -24,7 +24,7 @@ resource "google_folder" "logging-csoc" {
 
 resource "google_folder_iam_binding" "logging_admin" {
   folder = google_folder.logging-csoc.name
-  role   = "roles/editor"
+  role   = "roles/viewer"
   members = [
     "group:gcp-security-admins@${var.org_domain}",
   ]

@@ -29,7 +29,7 @@ resource "random_string" "project-logging-suffix" {
 }
 
 module "project-logging" {
-  source  = "terraform-google-modules/project-factory/google"
+  source = "terraform-google-modules/project-factory/google"
 
   name       = "organization-logging"
   project_id = "organization-logging-${random_string.project-logging-suffix.result}"
