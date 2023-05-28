@@ -10,6 +10,18 @@ resource "google_project_service" "logging-service-cloudbilling" {
   }
 }
 
+resource "google_project_service" "logging-service-pubsub" {
+  project = var.pipeline_project_id
+  service = "pubsub.googleapis.com"
+
+  disable_on_destroy = false
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+}
+
 resource "random_string" "project-logging-suffix" {
   length  = 5
   special = false
@@ -18,7 +30,6 @@ resource "random_string" "project-logging-suffix" {
 
 module "project-logging" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 14.2"
 
   name       = "organization-logging"
   project_id = "organization-logging-${random_string.project-logging-suffix.result}"
@@ -31,6 +42,7 @@ module "project-logging" {
   enable_shared_vpc_host_project = false
 
   depends_on = [
-    google_project_service.logging-service-cloudbilling
+    google_project_service.logging-service-cloudbilling,
+    google_project_service.logging-service-pubsub,
   ]
 }
