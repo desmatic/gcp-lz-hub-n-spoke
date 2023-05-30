@@ -100,6 +100,27 @@ resource "google_compute_firewall" "connectivity-vpc-allow-iap-ssh" {
   ]
 }
 
+resource "google_compute_firewall" "connectivity-vpc-allow-iap-rdp" {
+  name      = "connectivity-vpc-allow-iap-rdp"
+  network   = module.connectivity-vpc.network_name
+  project   = module.project-connectivity-vpc.project_id
+  direction = "INGRESS"
+  priority  = 10000
+
+  log_config {
+    metadata = "INCLUDE_ALL_METADATA"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["3389"]
+  }
+
+  source_ranges = [
+    "35.235.240.0/20",
+  ]
+}
+
 resource "google_compute_firewall" "connectivity-vpc-allow-icmp" {
   name      = "connectivity-vpc-allow-icmp"
   network   = module.connectivity-vpc.network_name
