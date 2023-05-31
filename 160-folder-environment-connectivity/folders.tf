@@ -27,21 +27,6 @@ resource "google_folder_iam_binding" "connectivity_admin" {
   ]
 }
 
-resource "google_folder" "connectivity-dre" {
-  display_name = "DRE"
-  parent       = "folders/${google_folder.connectivity.folder_id}"
-}
-
-resource "google_folder" "connectivity-devops" {
-  display_name = "DevOps"
-  parent       = "folders/${google_folder.connectivity.folder_id}"
-}
-
-resource "google_folder" "connectivity-finops" {
-  display_name = "FinOps"
-  parent       = "folders/${google_folder.connectivity.folder_id}"
-}
-
 resource "google_folder" "connectivity-infraops" {
   display_name = "InfraOps"
   parent       = "folders/${google_folder.connectivity.folder_id}"
