@@ -1,3 +1,4 @@
+# https://cloud.google.com/dns/docs/zones/forwarding-zones#terraform
 resource "google_dns_managed_zone" "connectivity-azure-ad" {
   project     = var.connectivity_vpc_project_id
   name        = "connectivity-azure-ad"
