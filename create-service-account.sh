@@ -31,7 +31,8 @@ for ROLE in \
     roles/resourcemanager.organizationAdmin \
     roles/resourcemanager.projectCreator \
     roles/resourcemanager.projectDeleter \
-    roles/storage.admin
+    roles/storage.admin \
+    roles/iam.serviceAccountTokenCreator
 do
     echo "binding organization role $ROLE"
     gcloud resource-manager folders add-iam-policy-binding ${LZ_FOLDER_ID} \
