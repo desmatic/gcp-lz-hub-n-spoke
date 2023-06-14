@@ -1,0 +1,14 @@
+#public_key_path         = "~/.ssh/gcp-lab-key.pub"
+prefix                  = "panw"
+cidr_mgmt               = "10.210.12.0/27"
+cidr_untrust            = "10.210.12.128/27"
+cidr_trust              = "10.210.0.0/22"
+allowed_sources         = ["0.0.0.0/0"]
+panorama_address        = "75.90.5.10"
+panorama_device_group   = "gcp-transit"
+panorama_template_stack = "gcp-transit_stack"
+panorama_vm_auth_key    = "0249501234560120"
+vmseries_image_name     = "https://www.googleapis.com/compute/v1/projects/paloaltonetworksgcp-public/global/images/vmseries-flex-bundle2-1014"
+vmseries_per_zone_min   = 1
+vmseries_per_zone_max   = 2
+ssh_keys = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDibRW/ZMWZG7iXLg4DRLqsO6VH9IONTaEMMzuGX1/Er+e7spebVBwc4Ely3OnHzjjw/sQLoxxo8aNYAXj+lUbeh0RBT+655nNUpc93mhFgWhZ1VmBU3EM9uU7nVv1v5yfp0s9lGhA/2lMoKdgT2u9SIxBPULZHfJA8hJ6JICk3JBgozj3hsWoM13muYIR0+q108Aaj279ivLJ4cDn+SlDwIzPwrXaLP2SHUsKr5LjfMCagtmalxmZGjVRDpHFl2EPiIAwanjoCX3JoiwgKqP50nmKzSD5m1eICbJupqOLPu1FkYtlPJSXIbV0gFY/dH81C5mByA1072ornE5ERA00L admin"
