@@ -1,7 +1,7 @@
 module "spoke" {
   source = "./modules/spoke-v1.0/"
 
-  spoke_name                = "sandbox"
+  spoke_name                = "Sandbox"
   spoke_subdomain           = "snd"
   spoke_vpc_primary_prefix  = var.landingzone_network
   spoke_vpc_primary_newbits = 6

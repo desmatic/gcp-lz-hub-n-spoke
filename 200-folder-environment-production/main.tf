@@ -5,7 +5,7 @@ module "spoke" {
   spoke_subdomain           = "prd"
   spoke_vpc_primary_prefix  = var.landingzone_network
   spoke_vpc_primary_newbits = 6
-  spoke_vpc_primary_netnum  = 8
+  spoke_vpc_primary_netnum  = 32
 
   billing_account                = var.billing_account
   connectivity_network_self_link = var.connectivity_network_self_link
