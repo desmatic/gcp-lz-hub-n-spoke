@@ -1,7 +1,0 @@
-provider "google" {
-
-}
-
-provider "random" {
-
-}

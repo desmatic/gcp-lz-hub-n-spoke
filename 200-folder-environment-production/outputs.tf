@@ -1,4 +1,9 @@
 output "production_folder_id" {
-  description = "The production folder id"
-  value       = google_folder.production.folder_id
+  description = "The spoke folder id"
+  value       = module.spoke.spoke_folder_id
+}
+
+output "production_network_self_link" {
+  description = "The spoke network id"
+  value       = module.spoke.spoke_network_self_link
 }

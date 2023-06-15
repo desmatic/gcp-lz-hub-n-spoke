@@ -1,9 +1,9 @@
 output "sandbox_folder_id" {
-  description = "The sandbox folder id"
-  value       = google_folder.sandbox.folder_id
+  description = "The spoke folder id"
+  value       = module.spoke.spoke_folder_id
 }
 
 output "sandbox_network_self_link" {
-  description = "The sandbox network id"
-  value       = module.sandbox-vpc.network_self_link
+  description = "The spoke network id"
+  value       = module.spoke.spoke_network_self_link
 }

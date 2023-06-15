@@ -8,8 +8,8 @@ variable "pipeline_project_id" {
   type        = string
 }
 
-variable "production_folder_id" {
-  description = "The organization folder id for production environments"
+variable "environment_folder_id" {
+  description = "The folder id for deploying resources under"
   type        = string
 }
 
@@ -25,16 +25,15 @@ variable "org_id" {
 
 variable "region_primary" {
   description = "Primary region for networks and workloads"
-}
-
-variable "region_secondary" {
-  description = "Secondary region for networks and workloads"
+  type        = string
 }
 
 variable "landingzone_network" {
   description = "10.x.0.0/16 subnet for networks and workloads"
+  type        = string
 }
 
 variable "connectivity_network_self_link" {
   description = "Output from connectivity module for network peering"
+  type        = string
 }
