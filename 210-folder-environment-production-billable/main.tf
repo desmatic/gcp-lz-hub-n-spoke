@@ -1,7 +1,7 @@
 module "spoke" {
   source = "./modules/spoke-v1.0/"
 
-  spoke_name                = "ProductionBillable"
+  spoke_name                = "ProductionB"
   spoke_subdomain           = "prb"
   spoke_vpc_primary_prefix  = var.landingzone_network
   spoke_vpc_primary_newbits = 6
