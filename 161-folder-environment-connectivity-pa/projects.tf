@@ -35,12 +35,26 @@ module "project-connectivity-pa-vpc" {
 }
 
 module "allow-external-ips-for-vm-instances" {
-  source  = "terraform-google-modules/org-policy/google"
+  source = "terraform-google-modules/org-policy/google"
 
   policy_for  = "project"
   project_id  = module.project-connectivity-pa-vpc.project_id
   constraint  = "compute.vmExternalIpAccess"
   policy_type = "list"
+  enforce     = false
+
+  depends_on = [
+    module.project-connectivity-pa-vpc
+  ]
+}
+
+module "enable-serial-port-access-for-vm-instances" {
+  source = "terraform-google-modules/org-policy/google"
+
+  policy_for  = "project"
+  project_id  = module.project-connectivity-pa-vpc.project_id
+  constraint  = "compute.disableSerialPortAccess"
+  policy_type = "boolean"
   enforce     = false
 
   depends_on = [

@@ -184,6 +184,7 @@ module "autoscale" {
     dns-primary                 = "8.8.8.8"
     dns-secondary               = "4.2.2.2"
     ssh-keys                    = var.ssh_keys
+    serial-port-enable          = "TRUE"
   }
 
   # Example of full bootstrap with Google storage bucket.

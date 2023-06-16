@@ -8,7 +8,8 @@ panorama_address        = "75.90.5.10"
 panorama_device_group   = "gcp-transit"
 panorama_template_stack = "gcp-transit_stack"
 panorama_vm_auth_key    = "0249501234560120"
-vmseries_image_name     = "https://www.googleapis.com/compute/v1/projects/paloaltonetworksgcp-public/global/images/vmseries-flex-bundle2-1014"
+#vmseries_image_name     = "https://www.googleapis.com/compute/v1/projects/paloaltonetworksgcp-public/global/images/vmseries-flex-bundle2-1014"
+vmseries_image_name     = "https://www.googleapis.com/compute/v1/projects/paloaltonetworksgcp-public/global/images/vmseries-flex-byol-1023"
 vmseries_per_zone_min   = 1
 vmseries_per_zone_max   = 2
-ssh_keys = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDibRW/ZMWZG7iXLg4DRLqsO6VH9IONTaEMMzuGX1/Er+e7spebVBwc4Ely3OnHzjjw/sQLoxxo8aNYAXj+lUbeh0RBT+655nNUpc93mhFgWhZ1VmBU3EM9uU7nVv1v5yfp0s9lGhA/2lMoKdgT2u9SIxBPULZHfJA8hJ6JICk3JBgozj3hsWoM13muYIR0+q108Aaj279ivLJ4cDn+SlDwIzPwrXaLP2SHUsKr5LjfMCagtmalxmZGjVRDpHFl2EPiIAwanjoCX3JoiwgKqP50nmKzSD5m1eICbJupqOLPu1FkYtlPJSXIbV0gFY/dH81C5mByA1072ornE5ERA00L admin"
+ssh_keys                = "admin:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCcuXX5e4tPCtPbearPQfrPnIIT5b8Shj14L0DHqNj5UKjS8wGfs008OlYilp1vheZB/EfygDCyZDYo53GxtL0nH3s097RbkIg7op+2q7KNfWbmE6rFhoIRBUaFh5uSCyVv19fuoCI6u+QmWYgAYQO/xvVXz6UdM8z+igrinP2EJ+0km91liqax0yXjOkafcDTS+gbGgcvjA0xX5rF7952xp4qs8EFaLWyr5LeUfRMgZsvWlBPuSnuULs5kA4wg3IUeXu5b2DC5PWZDhyW7Kzi082f3lxISCLn4o1n87HntpQnsXoO4vVk9ype5oT1mGQMW9Gqz8Lr5Kp8wWeTvMmBR/2mHepHnXFUgdB1nAReLfnMKe8j87eidBQ0t8mXQpjRtpRjNTPDq8m8RGn4ruxmyjnu6bhnBcuazhTUWHpyfrSz1kQl+0GUARJQotrsA/exkFtmNRw1XIOLR9/wRUOsnrHNIvt7MG6c51kM/cDtkTsSfckr7FPi9XmNLUtt8Do8="
