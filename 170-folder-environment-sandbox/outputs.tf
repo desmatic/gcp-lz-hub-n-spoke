@@ -22,3 +22,8 @@ output "spoke_network_self_link" {
   description = "Network id for spoke"
   value       = module.spoke.spoke_network_self_link
 }
+
+output "spoke_subnetwork_primary" {
+  description = "Network name for primary spoke"
+  value       = module.spoke.spoke_subnetwork_primary
+}

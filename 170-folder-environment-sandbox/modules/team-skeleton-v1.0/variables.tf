@@ -33,8 +33,33 @@ variable "spoke_name" {
   type        = string
 }
 
-variable "spoke_monitoring_project_id" {
+variable "spoke_folder_name" {
   description = "The name of the environment resources are deployed to"
+  type        = string
+}
+
+variable "spoke_vpc_project_id" {
+  description = "Project ID of host VPC for service projects"
+  type        = string
+}
+
+variable "spoke_monitoring_project_id" {
+  description = "Project ID to sending metrics to"
+  type        = string
+}
+
+variable "spoke_secrets_project_id" {
+  description = "Project ID where secrets are stored"
+  type        = string
+}
+
+variable "spoke_subnetwork_primary" {
+  description = "The name of the primary network in the host VPC"
+  type        = string
+}
+
+variable "team_folder_name" {
+  description = "The name of the folder for the team"
   type        = string
 }
 
