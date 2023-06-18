@@ -1,0 +1,49 @@
+variable "billing_account" {
+  description = "The ID of the billing account to associate projects with"
+  type        = string
+}
+
+variable "org_domain" {
+  description = "The organization id for the associated resources"
+  type        = string
+}
+
+variable "org_id" {
+  description = "The organization id for the associated resources"
+  type        = string
+}
+
+variable "pipeline_project_id" {
+  description = "Pipeline project id for making terraform api calls"
+  type        = string
+}
+
+variable "region_primary" {
+  description = "Primary region for networks and workloads"
+  type        = string
+}
+
+variable "spoke_domain" {
+  description = "The fully qualified domain name for the environment"
+  type        = string
+}
+
+variable "spoke_name" {
+  description = "The name of the environment resources are deployed to"
+  type        = string
+}
+
+variable "spoke_monitoring_project_id" {
+  description = "The name of the environment resources are deployed to"
+  type        = string
+}
+
+variable "team_name" {
+  description = "The name of the folder for the team"
+  type        = string
+}
+
+variable "team_folder_id" {
+  description = "The folder id for the team"
+  type        = string
+}
