@@ -26,6 +26,7 @@ resource "google_monitoring_monitored_project" "project-compute-monitor" {
 module "service_accounts" {
   source = "terraform-google-modules/service-accounts/google"
   #version       = "~> 3.0"
+
   project_id = module.project-compute.project_id
   prefix     = var.spoke_name
   names      = ["-${var.team_name}-mig"]
@@ -36,7 +37,8 @@ module "service_accounts" {
 }
 
 module "instance_template" {
-  source             = "terraform-google-modules/vm/google//modules/instance_template"
+  source = "terraform-google-modules/vm/google//modules/instance_template"
+
   project_id         = module.project-compute.project_id
   subnetwork_project = var.spoke_vpc_project_id
   subnetwork         = var.spoke_subnetwork_primary
@@ -53,13 +55,18 @@ module "instance_template" {
   #  labels                       = var.labels
 }
 
-#module "mig_with_percent" {
-#  source = "terraform-google-modules/vm/google//modules/mig_with_percent"
-#
-#  region                            = var.region_primary
-#  target_size                       = 4
-#  hostname                          = "mig-with-percent-simple"
-#  instance_template_initial_version = module.preemptible_and_regular_instance_templates.regular_self_link
-#  instance_template_next_version    = module.preemptible_and_regular_instance_templates.preemptible_self_link
-#  next_version_percent              = 30
-#}
+module "mig_with_percent" {
+  source = "terraform-google-modules/vm/google//modules/mig_with_percent"
+  count = 0
+
+  project_id                        = module.project-compute.project_id
+  region                            = var.region_primary
+  hostname                          = "${var.spoke_name}-${var.team_name}-mig"
+  instance_template_initial_version = module.instance_template.self_link
+  instance_template_next_version    = module.instance_template.self_link
+  next_version_percent              = 50
+  autoscaling_cpu = [{
+    target            = 0.4
+    predictive_method = "OPTIMIZE_AVAILABILITY"
+  }]
+}

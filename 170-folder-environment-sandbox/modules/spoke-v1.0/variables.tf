@@ -55,3 +55,23 @@ variable "spoke_vpc_primary_netnum" {
   description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
   type        = number
 }
+
+variable "spoke_vpc_primary_proxy_newbits" {
+  description = "The number of additional bits with which to extend the cidrsubnet prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_proxy_netnum" {
+  description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_connect_newbits" {
+  description = "The number of additional bits with which to extend the cidrsubnet prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_connect_netnum" {
+  description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
+  type        = number
+}

@@ -1,11 +1,15 @@
 module "spoke" {
   source = "./modules/spoke-v1.0/"
 
-  spoke_name                = "Sandbox"
-  spoke_subdomain           = "snd"
-  spoke_vpc_primary_prefix  = var.landingzone_network
-  spoke_vpc_primary_newbits = 6
-  spoke_vpc_primary_netnum  = 8
+  spoke_name                      = "Sandbox"
+  spoke_subdomain                 = "snd"
+  spoke_vpc_primary_prefix        = var.landingzone_network
+  spoke_vpc_primary_newbits       = 6
+  spoke_vpc_primary_netnum        = 8
+  spoke_vpc_primary_connect_newbits = 7
+  spoke_vpc_primary_connect_netnum  = 22
+  spoke_vpc_primary_proxy_newbits = 7
+  spoke_vpc_primary_proxy_netnum  = 23
 
   billing_account                = var.billing_account
   connectivity_network_self_link = var.connectivity_network_self_link

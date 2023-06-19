@@ -46,8 +46,7 @@ module "spoke-vpc" {
   ]
 
   #  secondary_ranges = {
-  #    ${local.spoke_name}-primary-region   = []
-  #    ${local.spoke_name}-secondary-region = []
+  #    ${local.spoke_name}-primary-region-containers   = []
   #  }
 
   routes = [
@@ -65,6 +64,30 @@ module "spoke-vpc" {
     google_project_service.project-spoke-vpc-service-compute,
     google_project_service.project-spoke-vpc-service-iam,
   ]
+}
+
+resource "google_compute_subnetwork" "spoke-vpc-connect-primary-region" {
+  provider = google-beta
+
+  name          = "${local.spoke_name}-connect-primary-region"
+  project       = module.project-spoke-vpc.project_id
+  ip_cidr_range = cidrsubnet(var.spoke_vpc_primary_prefix, var.spoke_vpc_primary_connect_newbits, var.spoke_vpc_primary_connect_netnum)
+  region        = var.region_primary
+  purpose       = "PRIVATE_SERVICE_CONNECT"
+  role          = "ACTIVE"
+  network       = module.spoke-vpc.network_id
+}
+
+resource "google_compute_subnetwork" "spoke-vpc-proxy-primary-region" {
+  provider = google-beta
+
+  name          = "${local.spoke_name}-proxy-primary-region"
+  project       = module.project-spoke-vpc.project_id
+  ip_cidr_range = cidrsubnet(var.spoke_vpc_primary_prefix, var.spoke_vpc_primary_proxy_newbits, var.spoke_vpc_primary_proxy_netnum)
+  region        = var.region_primary
+  purpose       = "REGIONAL_MANAGED_PROXY"
+  role          = "ACTIVE"
+  network       = module.spoke-vpc.network_id
 }
 
 resource "google_compute_firewall" "spoke-vpc-allow-iap-ssh" {
