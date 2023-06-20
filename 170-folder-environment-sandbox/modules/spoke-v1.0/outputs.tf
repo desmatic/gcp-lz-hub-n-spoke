@@ -13,6 +13,11 @@ output "spoke_domain" {
   value       = "${var.spoke_subdomain}.gcp.${var.org_domain}."
 }
 
+output "spoke_subdomain" {
+  description = "The subdoman name of the spoke"
+  value       = "${var.spoke_subdomain}"
+}
+
 output "spoke_folder_id" {
   description = "The spoke folder id"
   value       = google_folder.spoke.folder_id
@@ -40,5 +45,5 @@ output "spoke_network_self_link" {
 
 output "spoke_subnetwork_primary" {
   description = "The primary subnetwork"
-  value       = "${local.spoke_name}-primary-region"
+  value       = "${var.spoke_subdomain}-primary-region"
 }

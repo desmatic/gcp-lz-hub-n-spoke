@@ -1,11 +1,20 @@
+locals {
+  team_name = lower(var.team_folder_name)
+}
+
+resource "google_folder" "team-folder" {
+  display_name = var.team_folder_name
+  parent       = "folders/${var.spoke_folder_id}"
+}
+
 module "project-compute" {
   source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
-  name              = "${var.spoke_name}-${var.team_name}-mig"
-  project_id        = "${var.spoke_name}-${var.team_name}-mig"
+  name              = "${var.spoke_subdomain}-${local.team_name}-mig"
+  project_id        = "${var.spoke_subdomain}-${local.team_name}-mig"
   random_project_id = true
   org_id            = var.org_id
-  folder_id         = var.team_folder_id
+  folder_id         = google_folder.team-folder.folder_id
 
   auto_create_network = false
   billing_account     = var.billing_account
@@ -23,17 +32,16 @@ resource "google_monitoring_monitored_project" "project-compute-monitor" {
   name          = module.project-compute.project_id
 }
 
-module "service_accounts" {
-  source = "terraform-google-modules/service-accounts/google"
-  #version       = "~> 3.0"
+resource "google_service_account" "service_account" {
+  account_id   = "${var.spoke_subdomain}-${local.team_name}-mig"
+  display_name = "${var.spoke_subdomain}-${local.team_name}-mig"
+  project      = module.project-compute.project_id
+}
 
-  project_id = module.project-compute.project_id
-  prefix     = var.spoke_name
-  names      = ["-${var.team_name}-mig"]
-  project_roles = [
-    "${module.project-compute.project_id}=>roles/viewer",
-    "${module.project-compute.project_id}=>roles/storage.objectViewer",
-  ]
+resource "google_project_iam_member" "service_account_bind_viewer" {
+  project = module.project-compute.project_id
+  role    = "roles/viewer"
+  member  = "serviceAccount:${google_service_account.service_account.email}"
 }
 
 module "instance_template" {
@@ -45,23 +53,22 @@ module "instance_template" {
   region             = var.region_primary
 
   service_account = {
-    email  = module.service_accounts.email
+    email  = google_service_account.service_account.email
     scopes = ["cloud-platform"]
   }
-  name_prefix = "${var.spoke_name}-${var.team_name}-mig"
+  name_prefix = "${var.spoke_subdomain}-${local.team_name}-mig"
 
-  #  stack_type                   = "IPV4_ONLY"
   #  tags                         = var.tags
   #  labels                       = var.labels
 }
 
 module "mig_with_percent" {
   source = "terraform-google-modules/vm/google//modules/mig_with_percent"
-  count = 0
+  count  = 0
 
   project_id                        = module.project-compute.project_id
   region                            = var.region_primary
-  hostname                          = "${var.spoke_name}-${var.team_name}-mig"
+  hostname                          = "${var.spoke_subdomain}-${local.team_name}-mig"
   instance_template_initial_version = module.instance_template.self_link
   instance_template_next_version    = module.instance_template.self_link
   next_version_percent              = 50

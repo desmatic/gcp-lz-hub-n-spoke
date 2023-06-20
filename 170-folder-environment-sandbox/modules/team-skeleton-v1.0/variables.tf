@@ -18,13 +18,27 @@ variable "pipeline_project_id" {
   type        = string
 }
 
+
 variable "region_primary" {
   description = "Primary region for networks and workloads"
   type        = string
 }
 
+variable "zone_primary" {
+  description = "Primary zone for networks and workloads"
+}
+
+variable "zone_secondary" {
+  description = "Secondary zone for networks and workloads"
+}
+
 variable "spoke_domain" {
   description = "The fully qualified domain name for the environment"
+  type        = string
+}
+
+variable "spoke_subdomain" {
+  description = "The subdomain for the environment"
   type        = string
 }
 
@@ -33,8 +47,8 @@ variable "spoke_name" {
   type        = string
 }
 
-variable "spoke_folder_name" {
-  description = "The name of the environment resources are deployed to"
+variable "spoke_folder_id" {
+  description = "The name of the folder id where resource are deployed to"
   type        = string
 }
 
@@ -59,16 +73,6 @@ variable "spoke_subnetwork_primary" {
 }
 
 variable "team_folder_name" {
-  description = "The name of the folder for the team"
-  type        = string
-}
-
-variable "team_name" {
-  description = "The name of the folder for the team"
-  type        = string
-}
-
-variable "team_folder_id" {
-  description = "The folder id for the team"
+  description = "The folder name for the team"
   type        = string
 }

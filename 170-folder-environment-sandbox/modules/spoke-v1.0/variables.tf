@@ -27,6 +27,14 @@ variable "region_primary" {
   description = "Primary region for networks and workloads"
 }
 
+variable "zone_primary" {
+  description = "Primary zone for networks and workloads"
+}
+
+variable "zone_secondary" {
+  description = "Secondary zone for networks and workloads"
+}
+
 variable "connectivity_network_self_link" {
   description = "Output from connectivity module for network peering"
 }

@@ -14,8 +14,8 @@ module "project-spoke-vpc" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 14.2"
 
-  name              = "${local.spoke_name}-vpc"
-  project_id        = "${local.spoke_name}-vpc"
+  name              = "${var.spoke_subdomain}-vpc"
+  project_id        = "${var.spoke_subdomain}-vpc"
   random_project_id = true
   org_id            = var.org_id
   folder_id         = google_folder.spoke-infraops.name
@@ -37,8 +37,8 @@ module "project-spoke-vpc" {
 module "project-spoke-monitoring" {
   source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
-  name              = "${local.spoke_name}-monitoring"
-  project_id        = "${local.spoke_name}-monitoring"
+  name              = "${var.spoke_subdomain}-monitoring"
+  project_id        = "${var.spoke_subdomain}-monitoring"
   random_project_id = true
   org_id            = var.org_id
   folder_id         = google_folder.spoke-sre.name
@@ -67,8 +67,8 @@ resource "google_monitoring_monitored_project" "project-spoke-vpc-monitor" {
 module "project-spoke-secrets" {
   source = "terraform-google-modules/project-factory/google//modules/svpc_service_project"
 
-  name              = "${local.spoke_name}-secrets"
-  project_id        = "${local.spoke_name}-secrets"
+  name              = "${var.spoke_subdomain}-secrets"
+  project_id        = "${var.spoke_subdomain}-secrets"
   random_project_id = true
   org_id            = var.org_id
   folder_id         = google_folder.spoke-csoc.name

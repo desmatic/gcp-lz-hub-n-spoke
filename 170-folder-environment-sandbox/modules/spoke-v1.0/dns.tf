@@ -11,7 +11,7 @@ resource "google_project_service" "project-spoke-vpc-service-dns" {
 }
 
 resource "google_dns_managed_zone" "spoke-vpc" {
-  name        = "${local.spoke_name}-vpc"
+  name        = "${var.spoke_subdomain}-vpc"
   dns_name    = "${var.spoke_subdomain}.gcp.${var.org_domain}."
   description = "${var.spoke_name} private DNS zone"
   labels = {
