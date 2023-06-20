@@ -1,9 +1,29 @@
-output "fixonfail_folder_id" {
-  description = "The spoke folder id"
+output "spoke_folder_name" {
+  description = "Folder name for spoke"
+  value       = module.spoke.spoke_folder_name
+}
+
+output "spoke_name" {
+  description = "Lowercase name for spoke"
+  value       = module.spoke.spoke_name
+}
+
+output "spoke_dns" {
+  description = "Fully qualified domain name for spoke"
+  value       = module.spoke.spoke_domain
+}
+
+output "spoke_folder_id" {
+  description = "Folder ID for spoke"
   value       = module.spoke.spoke_folder_id
 }
 
-output "fixonfail_network_self_link" {
-  description = "The spoke network id"
+output "spoke_network_self_link" {
+  description = "Network id for spoke"
   value       = module.spoke.spoke_network_self_link
+}
+
+output "spoke_subnetwork_primary" {
+  description = "Network name for primary spoke"
+  value       = module.spoke.spoke_subnetwork_primary
 }

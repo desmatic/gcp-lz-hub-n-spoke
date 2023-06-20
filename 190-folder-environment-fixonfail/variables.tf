@@ -28,6 +28,14 @@ variable "region_primary" {
   type        = string
 }
 
+variable "zone_primary" {
+  description = "Primary zone for networks and workloads"
+}
+
+variable "zone_secondary" {
+  description = "Secondary zone for networks and workloads"
+}
+
 variable "landingzone_network" {
   description = "10.x.0.0/16 subnet for networks and workloads"
   type        = string

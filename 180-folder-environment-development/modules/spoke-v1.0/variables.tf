@@ -27,6 +27,14 @@ variable "region_primary" {
   description = "Primary region for networks and workloads"
 }
 
+variable "zone_primary" {
+  description = "Primary zone for networks and workloads"
+}
+
+variable "zone_secondary" {
+  description = "Secondary zone for networks and workloads"
+}
+
 variable "connectivity_network_self_link" {
   description = "Output from connectivity module for network peering"
 }
@@ -52,6 +60,26 @@ variable "spoke_vpc_primary_newbits" {
 }
 
 variable "spoke_vpc_primary_netnum" {
+  description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_proxy_newbits" {
+  description = "The number of additional bits with which to extend the cidrsubnet prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_proxy_netnum" {
+  description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_connect_newbits" {
+  description = "The number of additional bits with which to extend the cidrsubnet prefix, see terraform cidrsubnet"
+  type        = number
+}
+
+variable "spoke_vpc_primary_connect_netnum" {
   description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
   type        = number
 }

@@ -23,16 +23,16 @@ resource "google_project_service" "project-spoke-vpc-service-iam" {
 }
 
 module "spoke-vpc" {
-  source  = "terraform-google-modules/network/google"
+  source = "terraform-google-modules/network/google"
 
   project_id      = module.project-spoke-vpc.project_id
-  network_name    = local.spoke_name
+  network_name    = var.spoke_subdomain
   routing_mode    = "GLOBAL"
   shared_vpc_host = true
 
   subnets = [
     {
-      subnet_name               = "${local.spoke_name}-primary-region"
+      subnet_name               = "${var.spoke_subdomain}-primary-region"
       subnet_ip                 = cidrsubnet(var.spoke_vpc_primary_prefix, var.spoke_vpc_primary_newbits, var.spoke_vpc_primary_netnum)
       subnet_region             = var.region_primary
       subnet_private_access     = true
@@ -46,8 +46,7 @@ module "spoke-vpc" {
   ]
 
   #  secondary_ranges = {
-  #    ${local.spoke_name}-primary-region   = []
-  #    ${local.spoke_name}-secondary-region = []
+  #    ${var.spoke_subdomain}-primary-region-containers   = []
   #  }
 
   routes = [
@@ -67,8 +66,32 @@ module "spoke-vpc" {
   ]
 }
 
+resource "google_compute_subnetwork" "spoke-vpc-connect-primary-region" {
+  provider = google-beta
+
+  name          = "${var.spoke_subdomain}-connect-primary-region"
+  project       = module.project-spoke-vpc.project_id
+  ip_cidr_range = cidrsubnet(var.spoke_vpc_primary_prefix, var.spoke_vpc_primary_connect_newbits, var.spoke_vpc_primary_connect_netnum)
+  region        = var.region_primary
+  purpose       = "PRIVATE_SERVICE_CONNECT"
+  role          = "ACTIVE"
+  network       = module.spoke-vpc.network_id
+}
+
+resource "google_compute_subnetwork" "spoke-vpc-proxy-primary-region" {
+  provider = google-beta
+
+  name          = "${var.spoke_subdomain}-proxy-primary-region"
+  project       = module.project-spoke-vpc.project_id
+  ip_cidr_range = cidrsubnet(var.spoke_vpc_primary_prefix, var.spoke_vpc_primary_proxy_newbits, var.spoke_vpc_primary_proxy_netnum)
+  region        = var.region_primary
+  purpose       = "REGIONAL_MANAGED_PROXY"
+  role          = "ACTIVE"
+  network       = module.spoke-vpc.network_id
+}
+
 resource "google_compute_firewall" "spoke-vpc-allow-iap-ssh" {
-  name      = "${local.spoke_name}-vpc-allow-iap-ssh"
+  name      = "${var.spoke_subdomain}-vpc-allow-iap-ssh"
   network   = module.spoke-vpc.network_name
   project   = module.project-spoke-vpc.project_id
   direction = "INGRESS"
@@ -91,7 +114,7 @@ resource "google_compute_firewall" "spoke-vpc-allow-iap-ssh" {
 }
 
 resource "google_compute_firewall" "spoke-vpc-allow-iap-rdp" {
-  name      = "${local.spoke_name}-vpc-allow-iap-rdp"
+  name      = "${var.spoke_subdomain}-vpc-allow-iap-rdp"
   network   = module.spoke-vpc.network_name
   project   = module.project-spoke-vpc.project_id
   direction = "INGRESS"
@@ -114,7 +137,7 @@ resource "google_compute_firewall" "spoke-vpc-allow-iap-rdp" {
 }
 
 resource "google_compute_firewall" "spoke-vpc-allow-icmp" {
-  name      = "${local.spoke_name}-vpc-allow-icmp"
+  name      = "${var.spoke_subdomain}-vpc-allow-icmp"
   network   = module.spoke-vpc.network_name
   project   = module.project-spoke-vpc.project_id
   direction = "INGRESS"
@@ -135,14 +158,14 @@ resource "google_compute_firewall" "spoke-vpc-allow-icmp" {
 
 # NAT Router and config
 resource "google_compute_router" "cr-spoke-vpc-sb0-primary-router" {
-  name    = "cr-${local.spoke_name}-vpc-sb0-primary-router"
+  name    = "cr-${var.spoke_subdomain}-vpc-sb0-primary-router"
   project = module.project-spoke-vpc.project_id
   region  = var.region_primary
   network = module.spoke-vpc.network_self_link
 }
 
 resource "google_compute_router_nat" "rn-spoke-vpc-sb0-primary-egress" {
-  name                               = "rn-${local.spoke_name}-vpc-sb0-primary-egress"
+  name                               = "rn-${var.spoke_subdomain}-vpc-sb0-primary-egress"
   project                            = module.project-spoke-vpc.project_id
   router                             = google_compute_router.cr-spoke-vpc-sb0-primary-router.name
   region                             = var.region_primary
@@ -158,6 +181,6 @@ resource "google_compute_router_nat" "rn-spoke-vpc-sb0-primary-egress" {
 
 resource "google_compute_address" "ca-spoke-vpc-sb0-primary-1" {
   project = module.project-spoke-vpc.project_id
-  name    = "ca-${local.spoke_name}-vpc-sb0-primary-1"
+  name    = "ca-${var.spoke_subdomain}-vpc-sb0-primary-1"
   region  = var.region_primary
 }
