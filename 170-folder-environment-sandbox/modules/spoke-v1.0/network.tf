@@ -78,6 +78,17 @@ resource "google_compute_subnetwork" "spoke-vpc-connect-primary-region" {
   network       = module.spoke-vpc.network_id
 }
 
+# serverless subnet must be /28
+resource "google_compute_subnetwork" "spoke-vpc-serverless-primary-region" {
+  provider = google-beta
+
+  name          = "${var.spoke_subdomain}-serverless-primary-region"
+  project       = module.project-spoke-vpc.project_id
+  ip_cidr_range = cidrsubnet(var.spoke_vpc_primary_prefix, 12, var.spoke_vpc_primary_serverless_netnum)
+  region        = var.region_primary
+  network       = module.spoke-vpc.network_id
+}
+
 resource "google_compute_subnetwork" "spoke-vpc-proxy-primary-region" {
   provider = google-beta
 

@@ -27,6 +27,7 @@ module "project-spoke-vpc" {
     "compute.googleapis.com",
     "container.googleapis.com",
     "dns.googleapis.com",
+    "vpcaccess.googleapis.com"
   ]
 
   depends_on = [

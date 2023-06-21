@@ -83,3 +83,8 @@ variable "spoke_vpc_primary_connect_netnum" {
   description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
   type        = number
 }
+
+variable "spoke_vpc_primary_serverless_netnum" {
+  description = "The number which will be used to populate the additional bits added to the prefix, see terraform cidrsubnet"
+  type        = number
+}

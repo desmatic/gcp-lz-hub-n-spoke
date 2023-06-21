@@ -10,6 +10,7 @@ module "spoke" {
   spoke_vpc_primary_connect_netnum  = 22
   spoke_vpc_primary_proxy_newbits   = 7
   spoke_vpc_primary_proxy_netnum    = 23
+  spoke_vpc_primary_serverless_netnum = 703
 
   billing_account                = var.billing_account
   connectivity_network_self_link = var.connectivity_network_self_link
